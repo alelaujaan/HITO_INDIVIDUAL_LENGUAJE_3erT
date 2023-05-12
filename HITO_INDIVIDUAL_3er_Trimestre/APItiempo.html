@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>TIEMPO</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="shortcut icon"
+        href="https://www.researchgate.net/publication/322032278/figure/fig1/AS:886666151604224@1588409092928/Figura-6-Sujetar-el-pene-a-90.png"
+        type="image/x-icon">
+    <link rel='stylesheet' type='text/css' media='screen' href='api.css'>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        document.cookie = "indice=0";
+        let cookies = document.cookie
+
+        
+        //Funcion para leer el valor de las cookies
+        function getCookie(nombre) {
+            const name = nombre + "="
+            const cDecoded = decodeURIComponent(document.cookie)
+            const cArr = cDecoded.split('; ')
+            let res;
+            cArr.forEach(val => {
+                if (val.indexOf(name) === 0) res = val.substring(name.length);
+            })
+            return res
+        }
+
+
+
+
+        function mostrardatos(indicio) {
+            document.cookie = "indice=0";
+            const peticion = fetch("https://www.el-tiempo.net/api/json/v2/provincias")
+            peticion.then(function (respuesta) {
+                if (respuesta.status !== 200) {
+                    console.log("Error en la conexion")
+                } else {
+                    console.log("Conexion Correcta")
+                    const json = respuesta.json().then(function (datos) {
+                        $("#titulotabla h1").html(datos.title)
+                        $("#titulo").html(datos.origen.productor)
+                        $("#web").html("Web-> "+datos.origen.web)
+                        $("#nombreprov").html("Nombre Provincia-> " + datos.provincias[indicio].NOMBRE_PROVINCIA)
+                        $("#codauton").html("Codigo Autonómico-> " + datos.provincias[indicio].CODAUTON)
+                        $("#codprov").html("Codigo Provincia-> " + datos.provincias[indicio].CODPROV)
+                        $("#comunidad").html("Nombre Comunidad-> " + datos.provincias[indicio].COMUNIDAD_CIUDAD_AUTONOMA)
+                        $("#capital").html("Capital-> " + datos.provincias[indicio].CAPITAL_PROVINCIA)
+
+                    })
+                }
+            })
+        }
+
+        function siguiente() {
+            if (getCookie("indice") > 50) {
+                alert("No hay más datos")
+                document.cookie="indice=52"
+            } else {
+                var indi = parseInt(getCookie("indice"))
+                indi++
+                mostrardatos(indi)
+                console.log(indi)
+                document.cookie = "indice=" + indi
+            }
+
+        }
+
+        function anterior() {
+            if (getCookie("indice") < 0) {
+                alert("No hay más datos")
+                document.cookie="indice=0"
+            } else {
+                var indi = parseInt(getCookie("indice"))
+                indi--
+                mostrardatos(indi)
+                console.log(indi)
+                document.cookie = "indice=" + indi
+            }
+        }
+
+        function iniciar() {
+            $(".tablaprincipal").fadeIn()
+            $(".inicio").fadeOut()
+            mostrardatos(0)
+        }
+    </script>
+</head>
+
+<body>
+    <h1>API WEB RICO</h1>
+    <div class="inicio">
+        <h2 class="inciar" onclick="iniciar()">INICIAR</h2>
+    </div>
+    <div>
+        <table class="tabla1">
+            <tr>
+                <td>
+                    <h1 id="titulo"></h1>
+                </td>
+            </tr>
+            <tr>
+                <td id="web"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="tablaprincipal">
+        <table>
+            <tr>
+                <td id="titulotabla" colspan="3">
+                    <h1></h1>
+                </td>
+            </tr>
+            <tr>
+                <td id="nombreprov"></td>
+                <td id="codauton"></td>
+                <td id="codprov"></td>
+            </tr>
+            <tr>
+                <td id="comunidad"></td>
+                <td id="capital"></td>
+                <td></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td><button onclick="anterior()">ANTERIOR</button></td>
+                <td><button onclick="mostrardatos(0)">REINICIAR</button></td>
+                <td><button onclick="siguiente()">SIGUIENTE</button></td>
+                
+            </tr>
+        </table>
+
+    </div>
+    <footer></footer>
+</body>
+
+</html>

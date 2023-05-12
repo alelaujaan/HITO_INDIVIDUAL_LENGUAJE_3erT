@@ -1,0 +1,36 @@
+h1{
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.tablaprincipal{
+    width: 100%;
+    display: none;
+}
+.tablaprincipal table{
+    width: 100%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-collapse: collapse;
+}
+.tablaprincipal td{
+    border: 1px solid black;
+    column-gap: 0;
+    width: 33%;
+    
+}
+button{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+h2{
+    font-size: medium;
+    text-align: center;
+    transition: all 2s;
+}
+h2:hover{
+    font-size: xx-large;
+    background-color: aqua;
+    transition: all 2s;
+    
+}
